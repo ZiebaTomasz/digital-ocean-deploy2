@@ -27,6 +27,9 @@ jobs:
       
       - name: Login docker
         run: doctl registry login --expiry-seconds 600
+
+      - name: show images
+        run: docker images
       
       - name: Push image
         run: docker push registry.digitalocean.com/news-app/news:$(echo $GITHUB_SHA | head -c7)
@@ -35,7 +38,7 @@ jobs:
         run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/news-app/news:'${TAG}'|' $GITHUB_WORKSPACE/config/deployment.yml
 
       - name: save config cluster
-        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 k8s-1-25-4-do-0-fra1-1673468753705
+        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 k8s-1-25-4-do-0-fra1-1673704623174
 
       - name: Deploy
         run: kubectl apply -f $GITHUB_WORKSPACE/config/deployment.yml
